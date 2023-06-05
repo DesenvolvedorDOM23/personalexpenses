@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     final tema = ThemeData();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Depesas Pesoais',
+      title: 'Depesas Pessoais',
       theme: ThemeData(
           primaryColor: Colors.purple,
           fontFamily: 'Quicksand',
