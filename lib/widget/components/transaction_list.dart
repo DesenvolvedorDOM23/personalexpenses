@@ -1,5 +1,6 @@
 import 'package:expenses/model/trasaction_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
@@ -9,26 +10,29 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return transaction.isEmpty
-        ? Column(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    "Nenhuma transação cadastrada",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  )),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                flex: 2,
-                child: Image.asset(
-                  'assets/images/waiting.png',
-                  fit: BoxFit.cover,
+        ? LayoutBuilder(builder: (context, constraints) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 20,
                 ),
-              )
-            ],
-          )
+                Text(
+                  "Nenhuma transação cadastrada",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: constraints.maxHeight * 0.6,
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
+                  ),
+                )
+              ],
+            );
+          })
         : ListView.builder(
             itemCount: transaction.length,
             itemBuilder: (context, index) {

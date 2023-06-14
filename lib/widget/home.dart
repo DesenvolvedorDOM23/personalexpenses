@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Transaction> _transactions = [];
+  bool _showchart = false;
 
   List<Transaction> get _recentTransaction {
     return _transactions.where((tr) {
@@ -54,6 +55,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     final appbar = AppBar(
       title: Text(
         'Despesas Pessoais',
@@ -61,6 +64,14 @@ class _HomePageState extends State<HomePage> {
       //   fontSize: 20 * MediaQuery.of(context).textScaleFactor,
       //responsividade do texto de acordo com a config. do usuario em seu apare.
       actions: [
+        if (isLandscape)
+          IconButton(
+              icon: Icon(_showchart ? Icons.list : Icons.show_chart),
+              onPressed: () {
+                setState(() {
+                  _showchart = !_showchart;
+                });
+              }),
         IconButton(
           icon: const Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
@@ -77,14 +88,16 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: availableheight * 0.25,
-              child: Chart(_recentTransaction),
-            ),
-            Container(
-              height: availableheight * 0.75,
-              child: TransactionList(_transactions, _removeTransaction),
-            ),
+            if (_showchart || !isLandscape)
+              Container(
+                height: availableheight * (!isLandscape ? 0.3 : 0.7),
+                child: Chart(_recentTransaction),
+              ),
+            if (!_showchart || !isLandscape)
+              Container(
+                height: availableheight * 0.60,
+                child: TransactionList(_transactions, _removeTransaction),
+              ),
           ],
         ),
       ),
