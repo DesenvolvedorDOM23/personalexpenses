@@ -43,62 +43,68 @@ class _TransactionFormState extends State<TransactionForm> {
     return Card(
       elevation: 5,
       child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(children: [
-          TextField(
-            onSubmitted: (_) => _submitForm(),
-            controller: titlecontroller,
-            decoration: const InputDecoration(
-              label: Text("Titulo"),
+        padding: EdgeInsets.only(
+          top: 10,
+          right: 10,
+          left: 10,
+          bottom: 20 + MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SingleChildScrollView(
+          child: Column(children: [
+            TextField(
+              onSubmitted: (_) => _submitForm(),
+              controller: titlecontroller,
+              decoration: const InputDecoration(
+                label: Text("Titulo"),
+              ),
             ),
-          ),
-          TextField(
-            onSubmitted: (_) => _submitForm(),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            controller: valuecontroller,
-            decoration: const InputDecoration(
-              label: Text('preço R\$'),
+            TextField(
+              onSubmitted: (_) => _submitForm(),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              controller: valuecontroller,
+              decoration: const InputDecoration(
+                label: Text('preço R\$'),
+              ),
             ),
-          ),
-          Container(
-            height: 70,
-            child: Row(
+            Container(
+              child: Row(
+                children: [
+                  Text(
+                    _selectedDate == null
+                        ? 'Nenhuma data selecionada'
+                        : 'Data selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}',
+                  ),
+                  TextButton(
+                    onPressed: _showDatePicker,
+                    child: const Text(
+                      'Selecionar Data',
+                      style: TextStyle(color: Colors.purple),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Row(
               children: [
-                Text(
-                  _selectedDate == null
-                      ? 'Nenhuma data selecionada'
-                      : 'Data selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}',
-                ),
-                TextButton(
-                  onPressed: _showDatePicker,
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                    Colors.purple,
+                  )),
+                  onPressed: _submitForm,
                   child: const Text(
-                    'Selecionar Data',
-                    style: TextStyle(color: Colors.purple),
+                    "nova transação ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans-Bold',
+                        fontWeight: FontWeight.bold),
                   ),
                 )
               ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                  Colors.purple,
-                )),
-                onPressed: _submitForm,
-                child: const Text(
-                  "nova transação ",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans-Bold',
-                      fontWeight: FontWeight.bold),
-                ),
-              )
-            ],
-          )
-        ]),
+            )
+          ]),
+        ),
       ),
     );
   }
